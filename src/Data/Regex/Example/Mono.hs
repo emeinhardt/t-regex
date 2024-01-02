@@ -5,7 +5,7 @@
 {-# LANGUAGE OverlappingInstances #-}
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE PostfixOperators #-}
-{-# LANGUAGE QuasiQuotes #-}
+-- {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 -- | Example of tree regular expressions over a regular data type.
 --   Click on @Source@ to view the code.
@@ -27,8 +27,8 @@ module Data.Regex.Example.Mono (
   rTree1, rTree2, rTree3, rRose1,
   -- ** Using 'with' views
   eWith1, eWith2,
-  -- ** Using the 'rx' quasi-quoter
-  eWith2Bis, eWith3, eWith4,
+  -- -- ** Using the 'rx' quasi-quoter
+  -- eWith2Bis, eWith3, eWith4,
   -- * Grammar and rules
   grammar1, grammar2, grammar3
 ) where
@@ -40,7 +40,7 @@ import qualified Data.Map as M
 import Data.Monoid (Sum(..))
 import Data.Regex.Generics
 import Data.Regex.Rules
-import Data.Regex.TH
+-- import Data.Regex.TH
 import GHC.Generics
 import Test.QuickCheck
 
@@ -120,17 +120,17 @@ eWith2 :: Tree -> [Tree]
 eWith2 (with rTree3 -> Just (_,e)) = e
 eWith2 _                           = error "What?"
 
-eWith2Bis :: Tree -> [Tree]
-eWith2Bis [rx| (\k -> branches <<- Branch_ 2 k k <||> leaves <<- Leaf_)^* |] = leaves
-eWith2Bis _  = []
+-- eWith2Bis :: Tree -> [Tree]
+-- eWith2Bis [rx| (\k -> branches <<- Branch_ 2 k k <||> leaves <<- Leaf_)^* |] = leaves
+-- eWith2Bis _  = []
 
-eWith3 :: Tree -> [Tree]
-eWith3 [rx| x <<- Leaf_ |] = x
-eWith3 _                   = error "What?"
+-- eWith3 :: Tree -> [Tree]
+-- eWith3 [rx| x <<- Leaf_ |] = x
+-- eWith3 _                   = error "What?"
 
-eWith4 :: Tree -> [Int]
-eWith4 [rx| (\k -> x <<- inj (Branch' __ k k) <||> e <<- Leaf_)^* |] = map (elt . unFix) x
-eWith4 _  = error "What?"
+-- eWith4 :: Tree -> [Int]
+-- eWith4 [rx| (\k -> x <<- inj (Branch' __ k k) <||> e <<- Leaf_)^* |] = map (elt . unFix) x
+-- eWith4 _  = error "What?"
 
 unFix :: Fix f -> f (Fix f)
 unFix (Fix x) = x

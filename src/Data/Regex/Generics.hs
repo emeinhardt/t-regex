@@ -8,6 +8,7 @@
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE UndecidableInstances #-}
 -- | Tree regular expressions over regular data types.
 module Data.Regex.Generics (
   -- * Base types
@@ -52,7 +53,7 @@ import Control.Applicative
 import Control.Exception
 import Control.Monad (guard)
 import Data.Foldable as F
-import Data.Functor.Foldable (Fix(..))
+import Data.Fix (Fix(..))
 import Data.Map (Map)
 import qualified Data.Map as M
 import Data.Maybe (isJust)
@@ -60,7 +61,7 @@ import Data.Typeable
 import GHC.Generics
 import System.IO.Unsafe (unsafePerformIO)
 import Test.QuickCheck
-import Test.QuickCheck.Arbitrary1
+import Test.QuickCheck.Arbitrary
 
 -- | The basic data type for tree regular expressions.
 --
@@ -339,7 +340,7 @@ instance Arbitrary c => ArbitraryRegexG (K1 i c) where
                           (\(_ :: DoNotCheckThisException) -> return (K1 <$> arbitrary))
 
 instance (Foldable f, Arbitrary1 f) => ArbitraryRegexG (Rec1 f) where
-  arbG g (Rec1 rs) = let r:_ = toList rs in Rec1 <$> arbitrary1 (arbitraryFromRegexAndGen g r)
+  arbG g (Rec1 rs) = let r:_ = toList rs in Rec1 <$> liftArbitrary (arbitraryFromRegexAndGen g r)
 
 instance ArbitraryRegexG a => ArbitraryRegexG (M1 i c a) where
   arbG g (M1 r) = M1 <$> arbG g r

@@ -68,7 +68,7 @@ import Data.MultiGenerics
 import Data.Typeable
 import System.IO.Unsafe (unsafePerformIO)
 import Test.QuickCheck
-import Test.QuickCheck.Arbitrary1
+import Test.QuickCheck.Arbitrary
 
 import Unsafe.Coerce -- :(
 
@@ -433,7 +433,7 @@ instance Arbitrary c => ArbitraryRegexG (K1m i c) where
                            (\(_ :: DoNotCheckThisException) -> return (K1m <$> arbitrary))
 
 instance (Foldable f, Arbitrary1 f, SingI xi) => ArbitraryRegexG (Rec1m f xi) where
-  arbG g (Rec1m rs) = let r:_ = toList rs in Rec1m <$> arbitrary1 (arbitraryFromRegexAndGen g r)
+  arbG g (Rec1m rs) = let r:_ = toList rs in Rec1m <$> liftArbitrary (arbitraryFromRegexAndGen g r)
 
 instance ArbitraryRegexG f => ArbitraryRegexG (Tag1m f xi) where
   arbG g (Tag1m r) = Tag1m <$> arbG g r

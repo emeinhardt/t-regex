@@ -7,7 +7,7 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE PostfixOperators #-}
 {-# LANGUAGE ViewPatterns #-}
-{-# LANGUAGE QuasiQuotes #-}
+--{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 -- | Example of tree regular expressions over
 --   a family of regular data types.
@@ -25,8 +25,8 @@ module Data.Regex.Example.Multi (
   rBis1, rBis2, rBis3, rBis4, rBis5,
   -- ** Using 'with' views
   cBis1, eBis1,
-  -- ** Using the 'mrx' quasi-quoter
-  eBis2,
+  -- -- ** Using the 'mrx' quasi-quoter
+  -- eBis2,
   -- * Grammars
   grammar1
 ) where
@@ -36,7 +36,7 @@ import Control.Lens hiding (at, (#), children)
 import Data.MultiGenerics
 import Data.Regex.MultiGenerics
 import Data.Regex.MultiRules
-import Data.Regex.TH
+-- import Data.Regex.TH
 import Test.QuickCheck
 
 data Ty = One | Two
@@ -128,8 +128,8 @@ eBis1 :: FixOne -> [FixOne]
 eBis1 (with cBis1 -> Just x) = x
 eBis1 _                      = error "What?"
 
-eBis2 :: FixOne -> [FixOne]
-eBis2 [mrx| (x :: One) <<- inj NilOne' |] = x
+-- eBis2 :: FixOne -> [FixOne]
+-- eBis2 [mrx| (x :: One) <<- inj NilOne' |] = x
 
 grammar1 :: IndexIndependentGrammar (Wrap Integer) Bis () String
 grammar1 = [

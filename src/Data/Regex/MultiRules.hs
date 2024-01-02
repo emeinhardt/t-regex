@@ -163,7 +163,7 @@ finalDown (IxCons c rest) children =
 
 -- | Separates matching and attribute calculation on a rule.
 --   The action should take as extra parameter the node which was matched.
-(->>>) :: forall f (ix :: k) inh syn (ixs :: [k])
+(->>>) :: forall k f (ix :: k) inh syn (ixs :: [k])
         . (IxListMonoid inh ixs, Monoid (syn ix), IxListMonoid syn ixs)
        => Regex (Wrap Integer) f ix
        -> (Fix f ix -> State (ActionState (Wrap Integer) inh syn ix) ())
@@ -171,7 +171,7 @@ finalDown (IxCons c rest) children =
 (rx ->>> st) nodes = Rule rx (stateToAction nodes st)
 
 -- | Separates matching and attribute calculation on a rule.
-(->>) :: forall f (ix :: k) inh syn (ixs :: [k])
+(->>) :: forall k f (ix :: k) inh syn (ixs :: [k])
        . (IxListMonoid inh ixs, Monoid (syn ix), IxListMonoid syn ixs)
       => Regex (Wrap Integer) f ix
       -> State (ActionState (Wrap Integer) inh syn ix) ()
@@ -186,7 +186,7 @@ check ok = modify (\(ActionState _ th rs) -> ActionState ok th rs)
 
 
 -- | Utility type which does not distinguish between indices.
-newtype IndexIndependent t ix = IndexIndependent t deriving (Show, Eq, Ord, Monoid)
+newtype IndexIndependent t ix = IndexIndependent t deriving (Show, Eq, Ord, Semigroup, Monoid)
 
 -- | A grammar whose attributes are equal throughout all indices.
 type IndexIndependentGrammar c f inh syn = Grammar c f (IndexIndependent inh) (IndexIndependent syn)
