@@ -8,7 +8,7 @@
   outputs = { self, nixpkgs, flake-utils, haskellNix }:
     flake-utils.lib.eachSystem [ "x86_64-linux" "x86_64-darwin" ] (system:
     let
-      compiler = "ghc810";
+      compiler = "ghc948";
       overlays = [ haskellNix.overlay
         (final: prev: {
           t-regex =
@@ -17,8 +17,8 @@
               compiler-nix-name = compiler;
               shell.tools = {
                 cabal = {};
-                # hlint = {};
-                # haskell-language-server = {};
+                hlint = {};
+                haskell-language-server = {};
                 hasktags = {};
                 haskdogs = {};
                 ghcid = {};
